@@ -17,6 +17,7 @@ class keyBordInput(threading.Thread):
         self._sock = sock
         
     def run(self):
+        print('input \'quit\' to exit!')
         while True:
             msg = input(str(self._sock.localAdr) + ':')
             if msg == 'quit' or self._sock._closed:
@@ -32,7 +33,7 @@ class keyBordInput(threading.Thread):
 '''
 if __name__== "__main__":
     IP = '169.254.252.124'
-    port = 6002
+    port = 6000
     client = TcpClient()
     client.connect(IP,port)
     #建立线程，用于接收键盘输入

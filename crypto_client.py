@@ -34,18 +34,21 @@ class keyBordInput(threading.Thread):
 '''
 if __name__== "__main__":
     IP = '169.254.252.124'
-    port = 6006
+    port = 6001
     client = TcpClient()
     client.connect(IP,port)
     #等待接收对方公钥
     cryto = CryptoModule() 
     client.setCryto(cryto)
-    publicKey = client.sock.recv(2048)
+    publicKey = client.receiveKey()
     print(publicKey.decode())
     cryto.importPublicKey(publicKey)
-    cryto.importAseKey(b'  client_key  ')
+    cryto.GenerateAseKey()
+    print('-------------AseKey------------')
+#    print(len(cryto.exportAseKey()))
     aseKey = cryto.RsaEncryptCipher.encrypt(cryto.exportAseKey())
-    client.sock.send(aseKey)
+    client.sendKey(aseKey)
+#    print(len(aseKey))
     #建立线程，用于接收键盘输入
     th = keyBordInput(client)
     th.start()

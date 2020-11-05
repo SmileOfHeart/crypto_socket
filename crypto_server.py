@@ -31,15 +31,18 @@ def keyBordInput(server):
     加密的服务器端程序
 '''         
 if __name__== "__main__":
-    server = TcpServer(6006ok)
+    server = TcpServer(6001)
     server.bind()
     server.listening()
     #产生加密模块
     cryto = CryptoModule() 
     publicKey = cryto.exportPublicKey()
     server.client.send(publicKey[0:])       #发送公钥
-    aseKey = cryto.RsaDecryptCipher.decrypt(server.client.recv(2048))   #解密ASE私钥
-    print(aseKey.decode())
+    receive = server.client.recv(2048)      
+    aseKey = cryto.RsaDecryptCipher.decrypt(receive)   #解密ASE私钥
+#    print('-------------AseKey------------')
+#    print(len(aseKey))
+#    print(aseKey.decode())
     cryto.importAseKey(aseKey)
     server.setCryto(cryto)
     #以函数的形式启动线程

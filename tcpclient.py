@@ -46,7 +46,7 @@ class TcpClient:
         return
 
     '''
-        send String msg
+        send String msg   
     '''
     def send(self, msg):
         byteMsg = msg.encode('utf-8')
@@ -60,10 +60,11 @@ class TcpClient:
     
     
     '''
-        send String msg
+        send key
+        key is bytes
     '''
-    def sendPublicKey(self):
-        byteMsg = self.cryto.GetMyPublicKey()     #pulickey是bytes数组
+    def sendKey(self,key):
+        byteMsg = key
         totalsent = 0
         while totalsent < len(byteMsg):
             sent = self.sock.send(byteMsg[totalsent:])
@@ -117,8 +118,7 @@ class TcpClient:
             if chunk is None or len(chunk) == 0:
                 self._closed = True
                 return
-            self.cryto.importPublicKey()
-        return
+            return chunk
 
     '''
         循环接收数据，转换成Str,放到msgBuff列表中
